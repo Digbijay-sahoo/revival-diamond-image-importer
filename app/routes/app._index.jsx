@@ -62,6 +62,23 @@ console.log("CSV Products:", shopifyProducts);
 console.log("Matches:", matches);
 console.log("Selected Metafield:", selectedMetafield);
   }
+async function testShopifyUpload() {
+  try {
+    const response = await fetch("/api/import", {
+      method: "POST",
+    });
+
+    const result = await response.json();
+
+    console.log("Shopify Response:", result);
+
+    alert(JSON.stringify(result, null, 2));
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+}
 
   return (
     <Page title="💎 Revival Diamond Image Importer">
@@ -180,6 +197,9 @@ console.log("Selected Metafield:", selectedMetafield);
           <Button variant="primary" onClick={startImport}>
             Parse Files
           </Button>
+          <Button onClick={testShopifyUpload}>
+  Test Shopify Upload
+</Button>
 
         </BlockStack>
       </Card>
