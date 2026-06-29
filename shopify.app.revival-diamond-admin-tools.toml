@@ -1,6 +1,6 @@
 client_id = "1d76489d69bde7a6ea482dcbe72029fa"
 name = "Revival Diamond Admin Tools"
-application_url = "https://example.com"
+application_url = "https://revival-diamond-image-importer-production.up.railway.app"
 embedded = true
 
 [access_scopes]
@@ -9,7 +9,10 @@ optional_scopes = []
 use_legacy_install_flow = false
 
 [auth]
-redirect_urls = []
+redirect_urls = [
+  "https://revival-diamond-image-importer-production.up.railway.app/auth/callback",
+  "https://revival-diamond-image-importer-production.up.railway.app/auth/shopify/callback"
+]
 
 [webhooks]
 api_version = "2026-04"
