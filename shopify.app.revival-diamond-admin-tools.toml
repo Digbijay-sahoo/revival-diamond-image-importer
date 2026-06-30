@@ -1,6 +1,6 @@
 client_id = "1d76489d69bde7a6ea482dcbe72029fa"
 name = "Revival Diamond Admin Tools"
-application_url = "https://revival-diamond-image-importer-production.up.railway.app"
+application_url = "https://fluffy-spoon-gr56g6v5vxv294pv-4040.app.github.dev"
 embedded = true
 
 [access_scopes]
@@ -10,10 +10,9 @@ use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [
-  "https://revival-diamond-image-importer-production.up.railway.app/auth/callback",
-  "https://revival-diamond-image-importer-production.up.railway.app/auth/shopify/callback"
+  "https://fluffy-spoon-gr56g6v5vxv294pv-4040.app.github.dev/auth/callback",
+  "https://fluffy-spoon-gr56g6v5vxv294pv-4040.app.github.dev/auth/shopify/callback"
 ]
-
 [webhooks]
 api_version = "2026-04"
 

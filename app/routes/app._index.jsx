@@ -64,13 +64,39 @@ console.log("Selected Metafield:", selectedMetafield);
   }
 async function testShopifyUpload() {
   try {
+    if (matchedProducts.length === 0) {
+      alert("Parse files first.");
+      return;
+    }
+
+    const product = matchedProducts[0];
+
+    console.log("===== PRODUCT =====");
+    console.log(product);
+
+    console.log("===== REQUEST =====");
+    console.log({
+  sku: product.rdSku,
+  imageUrl: product.image,
+  metafieldKey: selectedMetafield.key,
+});
+
     const response = await fetch("/api/import", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+  sku: product.rdSku,
+  imageUrl: product.image,
+  metafieldKey: selectedMetafield.key,
+}),
     });
 
     const result = await response.json();
 
-    console.log("Shopify Response:", result);
+    console.log("===== API RESPONSE =====");
+    console.log(result);
 
     alert(JSON.stringify(result, null, 2));
 
