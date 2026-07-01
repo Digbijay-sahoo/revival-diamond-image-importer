@@ -69,36 +69,44 @@ async function testShopifyUpload() {
       return;
     }
 
-    const product = matchedProducts[0];
+    let success = 0;
+    let failed = [];
 
-    console.log("===== PRODUCT =====");
-    console.log(product);
+    for (const product of matchedProducts) {
+      console.log("===== IMPORTING =====");
+      console.log(product.rdSku);
 
-    console.log("===== REQUEST =====");
-    console.log({
-  sku: product.rdSku,
-  imageUrl: product.image,
-  metafieldKey: selectedMetafield.key,
-});
+      const response = await fetch("/api/import", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sku: product.rdSku,
+          imageUrl: product.image,
+          metafieldKey: selectedMetafield.key,
+        }),
+      });
 
-    const response = await fetch("/api/import", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-  sku: product.rdSku,
-  imageUrl: product.image,
-  metafieldKey: selectedMetafield.key,
-}),
-    });
+      const result = await response.json();
 
-    const result = await response.json();
+      if (result.success) {
+        success++;
+        console.log("✅ Imported:", product.rdSku);
+      } else {
+        failed.push(product.rdSku);
+        console.log("❌ Failed:", product.rdSku, result.error);
+      }
+    }
 
-    console.log("===== API RESPONSE =====");
-    console.log(result);
+    alert(
+      `Import Complete
 
-    alert(JSON.stringify(result, null, 2));
+Success: ${success}
+Failed: ${failed.length}
+
+${failed.length ? failed.join("\n") : ""}`
+    );
 
   } catch (err) {
     console.error(err);
