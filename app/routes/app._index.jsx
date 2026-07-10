@@ -11,6 +11,7 @@ import {
   Text,
   RadioButton,
   Divider,
+  Banner,
 } from "@shopify/polaris";
 
 import { useState } from "react";
@@ -27,6 +28,8 @@ export default function HomePage() {
   const [parsedProducts, setParsedProducts] = useState([]);
   const [csvProducts, setCsvProducts] = useState([]);
   const [matchedProducts, setMatchedProducts] = useState([]);
+  const [metafieldSummary, setMetafieldSummary] = useState(null);
+const [creatingMetafields, setCreatingMetafields] = useState(false);
 
   async function startImport() {
     if (!htmlFile) {
@@ -113,7 +116,36 @@ ${failed.length ? failed.join("\n") : ""}`
     alert(err.message);
   }
 }
+async function createMissingMetafields() {
+  try {
+    setCreatingMetafields(true);
 
+    const response = await fetch("/api/metafields", {
+      method: "POST",
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+
+    setMetafieldSummary(result);
+
+    alert(
+      `Done!
+
+Created: ${result.created}
+Skipped: ${result.skipped}`
+    );
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  } finally {
+    setCreatingMetafields(false);
+  }
+}
   return (
     <Page title="💎 Revival Diamond Image Importer">
       <Card>
@@ -229,15 +261,69 @@ ${failed.length ? failed.join("\n") : ""}`
           <Divider />
 
           <Button variant="primary" onClick={startImport}>
-            Parse Files
-          </Button>
-          <Button onClick={testShopifyUpload}>
+  Parse Files
+</Button>
+
+<Button onClick={testShopifyUpload}>
   Test Shopify Upload
 </Button>
 
+{false && (
+  <Button
+    variant="secondary"
+    loading={creatingMetafields}
+    onClick={createMissingMetafields}
+  >
+    Create Missing Metafields
+  </Button>
+)}
+          
+
         </BlockStack>
       </Card>
+{metafieldSummary && (
+  <Card>
+    <BlockStack gap="300">
 
+      <Banner
+        tone="success"
+        title="Metafield Definitions Complete"
+      >
+        <p>
+          Created: {metafieldSummary.created}
+        </p>
+
+        <p>
+          Skipped: {metafieldSummary.skipped}
+        </p>
+      </Banner>
+
+      <table
+        style={{
+          width: "100%",
+          borderCollapse: "collapse",
+        }}
+      >
+        <thead>
+          <tr>
+            <th align="left">Metafield</th>
+            <th align="left">Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {metafieldSummary.results.map((row) => (
+            <tr key={row.label}>
+              <td>{row.label}</td>
+              <td>{row.status}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+    </BlockStack>
+  </Card>
+)}
       {parsedProducts.length > 0 && (
         <Card>
           <BlockStack gap="300">
