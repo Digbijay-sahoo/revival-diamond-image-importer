@@ -18,12 +18,18 @@ import { useState } from "react";
 
 export default function HomePage() {
   const [mode, setMode] = useState("variant");
-  const [selectedMetafield, setSelectedMetafield] = useState(
+  const [selectedWhiteMetafield, setSelectedWhiteMetafield] = useState(
   PRODUCT_METAFIELDS[0]
 );
 
-  const [htmlFile, setHtmlFile] = useState(null);
-  const [csvFile, setCsvFile] = useState(null);
+const [selectedYellowMetafield, setSelectedYellowMetafield] = useState(
+  PRODUCT_METAFIELDS[0]
+);
+
+const [whiteHtmlFile, setWhiteHtmlFile] = useState(null);
+const [yellowHtmlFile, setYellowHtmlFile] = useState(null);
+
+const [csvFile, setCsvFile] = useState(null);
 
   const [parsedProducts, setParsedProducts] = useState([]);
   const [csvProducts, setCsvProducts] = useState([]);
@@ -32,19 +38,27 @@ export default function HomePage() {
 const [creatingMetafields, setCreatingMetafields] = useState(false);
 
   async function startImport() {
-    if (!htmlFile) {
-      alert("Please select Supplier HTML.");
-      return;
-    }
+   if (!whiteHtmlFile && !yellowHtmlFile) {
+  alert("Please select at least one Supplier HTML.");
+  return;
+}
 
     if (!csvFile) {
       alert("Please select Shopify CSV.");
       return;
     }
 
-    // Parse HTML
-    const html = await htmlFile.text();
-    const htmlProducts = parseSupplierHtml(html);
+   let htmlProducts = [];
+
+if (whiteHtmlFile) {
+  const html = await whiteHtmlFile.text();
+  htmlProducts.push(...parseSupplierHtml(html));
+}
+
+if (yellowHtmlFile) {
+  const html = await yellowHtmlFile.text();
+  htmlProducts.push(...parseSupplierHtml(html));
+}
 
     // Parse CSV
     const csv = await csvFile.text();
@@ -63,7 +77,8 @@ setMatchedProducts(matches);
 console.log("HTML Products:", htmlProducts);
 console.log("CSV Products:", shopifyProducts);
 console.log("Matches:", matches);
-console.log("Selected Metafield:", selectedMetafield);
+console.log(selectedWhiteMetafield);
+console.log(selectedYellowMetafield);
   }
 async function testShopifyUpload() {
   try {
@@ -72,35 +87,57 @@ async function testShopifyUpload() {
       return;
     }
 
-    let success = 0;
-    let failed = [];
+   let success = 0;
+let failed = [];
 
-    for (const product of matchedProducts) {
-      console.log("===== IMPORTING =====");
-      console.log(product.rdSku);
+const uploadProducts = async (products, metafield) => {
 
-      const response = await fetch("/api/import", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          sku: product.rdSku,
-          imageUrl: product.image,
-          metafieldKey: selectedMetafield.key,
-        }),
-      });
+  for (const product of products) {
 
-      const result = await response.json();
+    const response = await fetch("/api/import", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        sku: product.rdSku,
+        imageUrl: product.image,
+        metafieldKey: metafield.key,
+      }),
+    });
 
-      if (result.success) {
-        success++;
-        console.log("✅ Imported:", product.rdSku);
-      } else {
-        failed.push(product.rdSku);
-        console.log("❌ Failed:", product.rdSku, result.error);
-      }
+    const result = await response.json();
+
+    if (result.success) {
+      success++;
+    } else {
+      failed.push(product.rdSku);
     }
+  }
+
+};
+
+    const whiteProducts = matchedProducts.filter(
+  p => whiteHtmlFile && p.rdSku.endsWith("14KW")
+);
+
+const yellowProducts = matchedProducts.filter(
+  p => yellowHtmlFile && p.rdSku.endsWith("14KY")
+);
+
+if (whiteProducts.length) {
+  await uploadProducts(
+    whiteProducts,
+    selectedWhiteMetafield
+  );
+}
+
+if (yellowProducts.length) {
+  await uploadProducts(
+    yellowProducts,
+    selectedYellowMetafield
+  );
+}
 
     alert(
       `Import Complete
@@ -179,26 +216,42 @@ Skipped: ${result.skipped}`
 />
 
             <Text variant="headingMd" as="h3">
-              Supplier HTML
-            </Text>
+  Supplier HTML (White)
+</Text>
 
-            <input
-              type="file"
-              accept=".html"
-              onChange={(e) => {
-                if (e.target.files.length) {
-                  setHtmlFile(e.target.files[0]);
-                }
-              }}
-            />
+<input
+  type="file"
+  accept=".html"
+  onChange={(e) => {
+    if (e.target.files.length) {
+      setWhiteHtmlFile(e.target.files[0]);
+    }
+  }}
+/>
+
+<Text variant="headingMd" as="h3">
+  Supplier HTML (Yellow)
+</Text>
+
+<input
+  type="file"
+  accept=".html"
+  onChange={(e) => {
+    if (e.target.files.length) {
+      setYellowHtmlFile(e.target.files[0]);
+    }
+  }}
+/>
 
           </BlockStack>
 <Divider />
 
 <BlockStack gap="300">
 
+  
+
   <Text variant="headingMd">
-    Product Metafield
+    Product Metafield (White)
   </Text>
 
   <select
@@ -208,22 +261,44 @@ Skipped: ${result.skipped}`
       border: "1px solid #ccc",
       fontSize: "14px",
     }}
-    value={selectedMetafield.key}
+    value={selectedWhiteMetafield.key}
     onChange={(e) => {
       const metafield = PRODUCT_METAFIELDS.find(
         (m) => m.key === e.target.value
       );
 
-      setSelectedMetafield(metafield);
-
-      console.log("Selected Metafield:", metafield);
+      setSelectedWhiteMetafield(metafield);
     }}
   >
     {PRODUCT_METAFIELDS.map((field) => (
-      <option
-        key={field.key}
-        value={field.key}
-      >
+      <option key={field.key} value={field.key}>
+        {field.label}
+      </option>
+    ))}
+  </select>
+
+  <Text variant="headingMd">
+    Product Metafield (Yellow)
+  </Text>
+
+  <select
+    style={{
+      padding: "10px",
+      borderRadius: "8px",
+      border: "1px solid #ccc",
+      fontSize: "14px",
+    }}
+    value={selectedYellowMetafield.key}
+    onChange={(e) => {
+      const metafield = PRODUCT_METAFIELDS.find(
+        (m) => m.key === e.target.value
+      );
+
+      setSelectedYellowMetafield(metafield);
+    }}
+  >
+    {PRODUCT_METAFIELDS.map((field) => (
+      <option key={field.key} value={field.key}>
         {field.label}
       </option>
     ))}

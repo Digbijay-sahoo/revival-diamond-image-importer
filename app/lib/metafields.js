@@ -57,54 +57,69 @@ export const PRODUCT_METAFIELDS = [
   // =========================
 
   {
-    label: "Builder Oval Sapphire White",
+    label: "Builder Oval Sapphire White - Done",
     namespace: "custom",
     key: "builder_oval_sapphire_white",
     type: "file_reference",
   },
   {
-    label: "Builder Oval Sapphire Yellow",
+    label: "Builder Oval Sapphire Yellow - Done",
     namespace: "custom",
     key: "builder_oval_sapphire_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Pear Sapphire White",
+    label: "Builder Pear Sapphire White - Done",
     namespace: "custom",
     key: "builder_pear_sapphire_white",
     type: "file_reference",
   },
   {
-    label: "Builder Pear Sapphire Yellow",
+    label: "Builder Pear Sapphire Yellow - Done",
     namespace: "custom",
     key: "builder_pear_sapphire_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Emerald Sapphire White",
+    label: "Builder Emerald Sapphire White - Done",
     namespace: "custom",
     key: "builder_emerald_sapphire_white",
     type: "file_reference",
   },
   {
-    label: "Builder Emerald Sapphire Yellow",
+    label: "Builder Emerald Sapphire Yellow - Done",
     namespace: "custom",
     key: "builder_emerald_sapphire_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Cushion Sapphire White",
+    label: "Builder Cushion Sapphire White - Done",
     namespace: "custom",
     key: "builder_cushion_sapphire_white",
     type: "file_reference",
   },
   {
-    label: "Builder Cushion Sapphire Yellow",
+    label: "Builder Cushion Sapphire Yellow - Done",
     namespace: "custom",
     key: "builder_cushion_sapphire_yellow",
     type: "file_reference",
   },
+// =========================
+// Pink Sapphire
+// =========================
 
+{
+  label: "Builder Cushion Pink Sapphire White - Done",
+  namespace: "custom",
+  key: "builder_cushion_pink_sapphire_white",
+  type: "file_reference",
+},
+{
+  label: "Builder Cushion Pink Sapphire Yellow - Done",
+  namespace: "custom",
+  key: "builder_cushion_pink_sapphire_yellow",
+  type: "file_reference",
+},
   // =========================
   // Ruby
   // =========================
