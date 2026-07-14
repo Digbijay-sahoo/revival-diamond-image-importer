@@ -28,16 +28,20 @@ const [selectedYellowMetafield, setSelectedYellowMetafield] = useState(
 
 const [whiteHtmlFile, setWhiteHtmlFile] = useState(null);
 const [yellowHtmlFile, setYellowHtmlFile] = useState(null);
-
 const [csvFile, setCsvFile] = useState(null);
-
   const [parsedProducts, setParsedProducts] = useState([]);
   const [csvProducts, setCsvProducts] = useState([]);
   const [matchedProducts, setMatchedProducts] = useState([]);
   const [metafieldSummary, setMetafieldSummary] = useState(null);
-const [creatingMetafields, setCreatingMetafields] = useState(false);
+  const [creatingMetafields, setCreatingMetafields] = useState(false);
+  const [whiteProgress, setWhiteProgress] = useState(0);
+  const [yellowProgress, setYellowProgress] = useState(0);
+  const [whiteTotal, setWhiteTotal] = useState(0);
+  const [yellowTotal, setYellowTotal] = useState(0);
+  const [failedSkus, setFailedSkus] = useState([]);
 
   async function startImport() {
+    setFailedSkus([]);
    if (!whiteHtmlFile && !yellowHtmlFile) {
   alert("Please select at least one Supplier HTML.");
   return;
@@ -73,12 +77,6 @@ const matches = matchProducts(
 setParsedProducts(htmlProducts);
 setCsvProducts(shopifyProducts);
 setMatchedProducts(matches);
-
-console.log("HTML Products:", htmlProducts);
-console.log("CSV Products:", shopifyProducts);
-console.log("Matches:", matches);
-console.log(selectedWhiteMetafield);
-console.log(selectedYellowMetafield);
   }
 async function testShopifyUpload() {
   try {
@@ -88,7 +86,12 @@ async function testShopifyUpload() {
     }
 
    let success = 0;
-let failed = [];
+   let failed = [];
+   setFailedSkus([]);
+   setWhiteProgress(0);
+   setYellowProgress(0);
+   setWhiteTotal(0);
+   setYellowTotal(0);
 
 const uploadProducts = async (products, metafield) => {
 
@@ -109,8 +112,17 @@ const uploadProducts = async (products, metafield) => {
     const result = await response.json();
 
     if (result.success) {
-      success++;
-    } else {
+  success++;
+
+  if (metafield.key === selectedWhiteMetafield.key) {
+    setWhiteProgress(prev => prev + 1);
+  }
+
+  if (metafield.key === selectedYellowMetafield.key) {
+    setYellowProgress(prev => prev + 1);
+  }
+
+} else {
       failed.push(product.rdSku);
     }
   }
@@ -124,6 +136,8 @@ const uploadProducts = async (products, metafield) => {
 const yellowProducts = matchedProducts.filter(
   p => yellowHtmlFile && p.rdSku.endsWith("14KY")
 );
+setWhiteTotal(whiteProducts.length);
+setYellowTotal(yellowProducts.length);
 
 if (whiteProducts.length) {
   await uploadProducts(
@@ -138,16 +152,7 @@ if (yellowProducts.length) {
     selectedYellowMetafield
   );
 }
-
-    alert(
-      `Import Complete
-
-Success: ${success}
-Failed: ${failed.length}
-
-${failed.length ? failed.join("\n") : ""}`
-    );
-
+setFailedSkus(failed);
   } catch (err) {
     console.error(err);
     alert(err.message);
@@ -246,9 +251,7 @@ Skipped: ${result.skipped}`
           </BlockStack>
 <Divider />
 
-<BlockStack gap="300">
-
-  
+<BlockStack gap="300"> 
 
   <Text variant="headingMd">
     Product Metafield (White)
@@ -342,7 +345,28 @@ Skipped: ${result.skipped}`
 <Button onClick={testShopifyUpload}>
   Test Shopify Upload
 </Button>
+<Text variant="bodyMd">
+  White Progress: {whiteProgress} / {whiteTotal}
+</Text>
 
+<Text variant="bodyMd">
+  Yellow Progress: {yellowProgress} / {yellowTotal}
+</Text>
+{failedSkus.length > 0 && (
+  <Card>
+    <BlockStack gap="200">
+
+      <Text variant="headingMd">
+        Failed SKUs ({failedSkus.length})
+      </Text>
+
+      {failedSkus.map((sku) => (
+        <Text key={sku}>{sku}</Text>
+      ))}
+
+    </BlockStack>
+  </Card>
+)}
 {false && (
   <Button
     variant="secondary"

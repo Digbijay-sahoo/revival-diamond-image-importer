@@ -125,61 +125,61 @@ export const PRODUCT_METAFIELDS = [
   // =========================
 
   {
-    label: "Builder Pear Ruby White",
+    label: "Builder Pear Ruby White - Done",
     namespace: "custom",
     key: "builder_pear_ruby_white",
     type: "file_reference",
   },
   {
-    label: "Builder Pear Ruby Yellow",
+    label: "Builder Pear Ruby Yellow - Done",
     namespace: "custom",
     key: "builder_pear_ruby_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Emerald Ruby White",
+    label: "Builder Emerald Ruby White - Done",
     namespace: "custom",
     key: "builder_emerald_ruby_white",
     type: "file_reference",
   },
   {
-    label: "Builder Emerald Ruby Yellow",
+    label: "Builder Emerald Ruby Yellow - Done",
     namespace: "custom",
     key: "builder_emerald_ruby_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Cushion Ruby White",
+    label: "Builder Cushion Ruby White - Done",
     namespace: "custom",
     key: "builder_cushion_ruby_white",
     type: "file_reference",
   },
   {
-    label: "Builder Cushion Ruby Yellow",
+    label: "Builder Cushion Ruby Yellow - Done",
     namespace: "custom",
     key: "builder_cushion_ruby_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Heart Ruby White",
+    label: "Builder Heart Ruby White - No Gemstone",
     namespace: "custom",
     key: "builder_heart_ruby_white",
     type: "file_reference",
   },
   {
-    label: "Builder Heart Ruby Yellow",
+    label: "Builder Heart Ruby Yellow - No Gemstone",
     namespace: "custom",
     key: "builder_heart_ruby_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Marquise Ruby White",
+    label: "Builder Marquise Ruby White - No product on briliant",
     namespace: "custom",
     key: "builder_marquise_ruby_white",
     type: "file_reference",
   },
   {
-    label: "Builder Marquise Ruby Yellow",
+    label: "Builder Marquise Ruby Yellow - No product on briliant",
     namespace: "custom",
     key: "builder_marquise_ruby_yellow",
     type: "file_reference",
@@ -190,25 +190,25 @@ export const PRODUCT_METAFIELDS = [
   // =========================
 
   {
-    label: "Builder Oval Emerald White",
+    label: "Builder Oval Emerald White - Done",
     namespace: "custom",
     key: "builder_oval_emerald_white",
     type: "file_reference",
   },
   {
-    label: "Builder Oval Emerald Yellow",
+    label: "Builder Oval Emerald Yellow - Done",
     namespace: "custom",
     key: "builder_oval_emerald_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Emerald Emerald White",
+    label: "Builder Emerald Emerald White - Done",
     namespace: "custom",
     key: "builder_emerald_emerald_white",
     type: "file_reference",
   },
   {
-    label: "Builder Emerald Emerald Yellow",
+    label: "Builder Emerald Emerald Yellow - Done",
     namespace: "custom",
     key: "builder_emerald_emerald_yellow",
     type: "file_reference",
@@ -284,25 +284,25 @@ export const PRODUCT_METAFIELDS = [
   // =========================
 
   {
-    label: "Builder Oval Paraiba White",
+    label: "Builder Oval Paraiba White - No Product on Briliant earth",
     namespace: "custom",
     key: "builder_oval_paraiba_white",
     type: "file_reference",
   },
   {
-    label: "Builder Oval Paraiba Yellow",
+    label: "Builder Oval Paraiba Yellow - No Product on Briliant earth",
     namespace: "custom",
     key: "builder_oval_paraiba_yellow",
     type: "file_reference",
   },
   {
-    label: "Builder Cushion Paraiba White",
+    label: "Builder Cushion Paraiba White - No Product on Briliant earth",
     namespace: "custom",
     key: "builder_cushion_paraiba_white",
     type: "file_reference",
   },
   {
-    label: "Builder Cushion Paraiba Yellow",
+    label: "Builder Cushion Paraiba Yellow - No Product on Briliant earth",
     namespace: "custom",
     key: "builder_cushion_paraiba_yellow",
     type: "file_reference",
